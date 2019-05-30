@@ -7,7 +7,7 @@ public class Deck
     ArrayList <Tile> newDeck;
 
     int x;
-
+    int y;
 
       public Deck(){
           newDeck = new ArrayList <Tile>();
