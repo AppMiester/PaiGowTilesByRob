@@ -6,8 +6,7 @@ public class Deck
 {
     ArrayList <Tile> newDeck;
 
-    int x;
-    int y;
+
 
       public Deck(){
           newDeck = new ArrayList <Tile>();
@@ -44,6 +43,12 @@ public class Deck
           newDeck.add(new Tile(Constants.chop_chit, true, 1, 7, 15, 14));
           newDeck.add(new Tile(Constants.chop_ng, true, 0, 5, 16, 15));
           newDeck.add(new Tile(Constants.chop_ng, true, 1, 5, 16, 15));
+      }
+
+
+
+      public static ArrayList getNewDeck(){
+          return new Deck().newDeck;
       }
 
 

@@ -40,8 +40,17 @@ public class Tile {
         return mixedPairNumber;
     }
 
+    public int getPairRank(){
+        return pairRank;
+    }
+
     public boolean isMixedPair() {
 
         return isMixedPair;
+    }
+
+    public String toString(){
+        String name = this.getName();
+        return name;
     }
 }
