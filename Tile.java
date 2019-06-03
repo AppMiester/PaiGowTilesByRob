@@ -9,15 +9,17 @@ public class Tile {
  private int numberOfSpots;
  private int pairRank;
  private int individualRank;
+ private int imgId;
 
 
-    public Tile(String name, boolean isMixedPair, int mixedPairNumber, int numberOfSpots,int pairRank, int individualRank) {
+    public Tile(String name, boolean isMixedPair, int mixedPairNumber, int numberOfSpots,int pairRank, int individualRank, int imgId) {
         this.name = name;
         this.isMixedPair = isMixedPair;
         this.mixedPairNumber = mixedPairNumber;
         this.numberOfSpots = numberOfSpots;
         this.pairRank = pairRank;
         this.individualRank = individualRank;
+        this.imgId = imgId;
     }
 
 
@@ -52,5 +54,9 @@ public class Tile {
     public String toString(){
         String name = this.getName();
         return name;
+    }
+
+    public int getImgId(){
+        return imgId;
     }
 }
