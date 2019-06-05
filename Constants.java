@@ -1,6 +1,10 @@
 package tribalway.by.paigow.com.paigowtilesbyrob;
 
+import android.app.Activity;
+import android.content.Context;
+
 public class Constants {
+
 
     public static final String gee_joon = "gee joon";
     public static final String teen = "teen";
@@ -18,4 +22,19 @@ public class Constants {
     public static final String chop_baht = "chop baht";
     public static final String chop_chit = "chop chit";
     public static final String chop_ng = "chop ng";
+
+
+    //wongs
+    public static final String teen_gow_wong = "teen gow wong";
+    public static final String day_gow_wong = "teen day wong";
+
+
+    //gongs
+    public static final String teen_gong = "teen gong";
+    public static final String day_gong = "day gong";
+
+    //high nines
+    public static final String  teen_high_nine = "teen high nine";
+    public static final String  day_high_nine = "day high nine";
+
 }

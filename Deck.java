@@ -12,7 +12,7 @@ public class Deck
           newDeck = new ArrayList <Tile>();
 
           newDeck.add(new Tile(Constants.gee_joon, true, 1, 3, 1, 16, R.drawable.gee_joon_1));
-          newDeck.add(new Tile(Constants.gee_joon, true, 2, 6,1, 16, R.drawable.gee_joon_2));
+          newDeck.add(new Tile(Constants.gee_joon, true, 2, 3,1, 16, R.drawable.gee_joon_2));
           newDeck.add(new Tile(Constants.teen, false, -1, 12, 2,1, R.drawable.teen));
           newDeck.add(new Tile(Constants.teen, false, -1, 12, 2,1, R.drawable.teen));
           newDeck.add(new Tile(Constants.day, false, -1, 2, 3,2, R.drawable.day));

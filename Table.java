@@ -25,12 +25,19 @@ public class Table extends AppCompatActivity {
     double bankroll = 1000.00;
     long delay = 1000;
 
+    boolean tilesDealt = false;
+
     ArrayList<Tile> deck = new ArrayList<Tile>();
     ArrayList<Tile> playerTiles = new ArrayList<Tile>();
     ArrayList<Tile> dealerTiles = new ArrayList<Tile>();
     ArrayList<TextView> playerTileViews = new ArrayList<TextView>();
 
     Handler handler = new Handler();
+
+    Hand playerHand_0 = new Hand();
+    Hand playerHand_1 = new Hand();
+    Hand dealerHand_0 = new Hand();
+    Hand dealerHand_1 = new Hand();
 
 
     @Override
@@ -50,14 +57,122 @@ public class Table extends AppCompatActivity {
 
 
     public void selectPlayerTile(View view) {
-        System.out.println("unselected margin = " + unSelectedMargin);
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-        if (params.bottomMargin == unSelectedMargin) {
-            params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin + 30);
-            view.setLayoutParams(params);
-        } else {
-            params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
-            view.setLayoutParams(params);
+
+        if(tilesDealt) {
+
+            Tile tile;
+
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            if (params.bottomMargin == unSelectedMargin) {
+                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin + 30);
+                view.setLayoutParams(params);
+
+
+
+                switch(view.getId()){
+
+                    case R.id.player_tile_0:
+                        tile = playerTiles.get(0);
+                        tile.setViewId(R.id.player_tile_0);
+
+                        if(playerHand_0.getTile0()== null){
+                            playerHand_0.setTile0(tile);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(tile);
+                            break;
+
+                        }
+
+                    case R.id.player_tile_1:
+                        tile = playerTiles.get(1);
+                        tile.setViewId(R.id.player_tile_1);
+
+                        if(playerHand_0.getTile0()== null){
+                            playerHand_0.setTile0(tile);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(tile);
+                            break;
+
+                        }
+
+                    case R.id.player_tile_2:
+                        tile = playerTiles.get(2);
+                        tile.setViewId(R.id.player_tile_2);
+
+                        if(playerHand_0.getTile0()== null){
+                            playerHand_0.setTile0(tile);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(tile);
+                            break;
+
+                        }
+
+                    case R.id.player_tile_3:
+                        tile = playerTiles.get(3);
+                        tile.setViewId(R.id.player_tile_3);
+
+                        if(playerHand_0.getTile0()== null){
+                            playerHand_0.setTile0(tile);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(tile);
+                            break;
+
+                        }
+
+
+                }
+            } else {
+                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
+                view.setLayoutParams(params);
+
+                switch(view.getId()){
+
+                    case R.id.player_tile_0:
+                        tile = playerTiles.get(0);
+                        if(tile == playerHand_0.getTile0()){
+                            playerHand_0.setTile0(null);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(null);
+                            break;
+                        }
+
+                    case R.id.player_tile_1:
+                        tile = playerTiles.get(1);
+                        if(tile == playerHand_0.getTile0()){
+                            playerHand_0.setTile0(null);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(null);
+                            break;
+                        }
+
+                    case R.id.player_tile_2:
+                        tile = playerTiles.get(2);
+                        if(tile == playerHand_0.getTile0()){
+                            playerHand_0.setTile0(null);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(null);
+                            break;
+                        }
+
+                    case R.id.player_tile_3:
+                        tile = playerTiles.get(0);
+                        if(tile == playerHand_0.getTile0()){
+                            playerHand_0.setTile0(null);
+                            break;
+                        }else{
+                            playerHand_0.setTile1(null);
+                            break;
+                        }
+                }
+            }
+
         }
 
     }
@@ -66,6 +181,8 @@ public class Table extends AppCompatActivity {
     //-------DEAL
 
     public void deal(View view) {
+
+        tilesDealt = true;
 
 
         deck.addAll(Deck.getNewDeck());
@@ -90,7 +207,7 @@ public class Table extends AppCompatActivity {
 
         }
         delay = 1000;
-        playerTiles = new ArrayList<Tile>();
+
         deck = new ArrayList<Tile>();
     }
 

@@ -10,6 +10,7 @@ public class Tile {
  private int pairRank;
  private int individualRank;
  private int imgId;
+ int viewId;
 
 
     public Tile(String name, boolean isMixedPair, int mixedPairNumber, int numberOfSpots,int pairRank, int individualRank, int imgId) {
@@ -58,5 +59,13 @@ public class Tile {
 
     public int getImgId(){
         return imgId;
+    }
+
+    public int getViewId() {
+        return viewId;
+    }
+
+    public void setViewId(int viewId) {
+        this.viewId = viewId;
     }
 }
