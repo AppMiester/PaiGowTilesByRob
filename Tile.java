@@ -13,6 +13,10 @@ public class Tile {
  int viewId;
 
 
+
+    public Tile(){};
+
+
     public Tile(String name, boolean isMixedPair, int mixedPairNumber, int numberOfSpots,int pairRank, int individualRank, int imgId) {
         this.name = name;
         this.isMixedPair = isMixedPair;

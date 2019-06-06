@@ -6,9 +6,12 @@ public class Hand {
     String handName;
 
     int handRank;
+
+
+    int highTileIndividualRank;
     int numberOfPoints;
-    Tile tile0;
-    Tile tile1;
+    Tile tile0 = null;
+    Tile tile1 = null;
     boolean isHighHand;
     boolean isPair;
     boolean isWong;
@@ -58,6 +61,15 @@ public class Hand {
 
     public void setHighHand(boolean highHand) {
         isHighHand = highHand;
+    }
+
+
+    public int getNumberOfPoints() {
+        return numberOfPoints;
+    }
+
+    public int getHighTileIndividualRank() {
+        return highTileIndividualRank;
     }
 
 
@@ -120,19 +132,19 @@ public class Hand {
         }
 
 
-        if( tile0.getName().equals(Constants.gee_joon) || tile1.getName().equals(Constants.gee_joon) && !isPair){
+        if (tile0.getName().equals(Constants.gee_joon) || tile1.getName().equals(Constants.gee_joon) && !isPair) {
 
-            Tile geeJoon = (tile0.getName().equals(Constants.gee_joon)? tile0 :tile1);
-            Tile notJeeJoon = (tile0.getName().equals(geeJoon.getName())? tile1 :tile0);
+            Tile geeJoon = (tile0.getName().equals(Constants.gee_joon) ? tile0 : tile1);
+            Tile notJeeJoon = (tile0.getName().equals(geeJoon.getName()) ? tile1 : tile0);
 
 
             int valueThree = geeJoon.getNumberOfSpots() + notJeeJoon.getNumberOfSpots() % 10;
             int valueSix = (6 + notJeeJoon.getNumberOfSpots()) % 10;
 
-            if( valueThree > valueSix ){
+            if (valueThree > valueSix) {
                 numberOfPoints = valueThree;
-                } else{
-                  numberOfPoints = valueSix;
+            } else {
+                numberOfPoints = valueSix;
             }
 
             handRank = notJeeJoon.getIndividualRank();
@@ -140,10 +152,58 @@ public class Hand {
 
         }
 
+        if(!isPair && !isGong && !isWong && !isHighNine ) {
+
+            numberOfPoints = (tile0.getNumberOfSpots() + tile1.getNumberOfSpots()) % 10;
+            highTileIndividualRank = (tile0.getIndividualRank() > tile1.getIndividualRank()) ? tile0.getIndividualRank() : tile1.getIndividualRank();
+
+            handRank = 100;
+
+
+        }
+
+    }
 
 
 
 
+    //------ finds the highest hand and sets isHighHand to true
+
+    public static void findHighHand(Hand playerHand0, Hand playerHand1) {
+
+        if (playerHand0.getHandRank() < playerHand1.getHandRank()) {
+            playerHand0.setHighHand(true);
+        }
+
+        if (playerHand1.getHandRank() < playerHand0.getHandRank()) {
+            playerHand1.setHighHand(true);
+        }
+
+
+        if (playerHand0.getHandRank() > 50 && playerHand1.getHandRank() > 50) {
+            int p_h_0numberOfPoints = playerHand0.getNumberOfPoints();
+            int p_h_1numberOfPoints = playerHand1.getNumberOfPoints();
+            int p_h_0individualRank = playerHand0.getHighTileIndividualRank();
+            int p_h_1individualRank = playerHand1.getHighTileIndividualRank();
+
+            if (p_h_0numberOfPoints > p_h_1numberOfPoints) {
+                playerHand0.setHighHand(true);
+            }
+            if (p_h_1numberOfPoints > p_h_0numberOfPoints) {
+                playerHand1.setHighHand(true);
+            } else {
+
+                if (p_h_0individualRank > p_h_1numberOfPoints) {
+                    playerHand0.setHighHand(true);
+                } else {
+                    playerHand1.setHighHand(true);
+                }
+            }
+
+
+        }
+
+       // return (playerHand0.isHighHand())? playerHand0 :playerHand1;
 
     }
 
