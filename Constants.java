@@ -26,7 +26,7 @@ public class Constants {
 
     //wongs
     public static final String teen_gow_wong = "teen gow wong";
-    public static final String day_gow_wong = "teen day wong";
+    public static final String day_gow_wong = "day gow wong";
 
 
     //gongs
@@ -36,5 +36,7 @@ public class Constants {
     //high nines
     public static final String  teen_high_nine = "teen high nine";
     public static final String  day_high_nine = "day high nine";
+
+    public static final String pair = "pair";
 
 }
