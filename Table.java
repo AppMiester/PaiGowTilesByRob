@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
 
 public class Table extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class Table extends AppCompatActivity {
     float playerTile3X;
     float playerTile3Y;
 
-   float highHand0X;
+    float highHand0X;
     float highHand0Y;
     float highHand1X;
     float highHand1Y;
@@ -51,6 +52,7 @@ public class Table extends AppCompatActivity {
     ArrayList<Tile> playerTiles = new ArrayList<Tile>();
     ArrayList<Tile> dealerTiles = new ArrayList<Tile>();
     ArrayList<TextView> playerTileViews = new ArrayList<TextView>();
+    ArrayList<TextView> dealerTileViews = new ArrayList<TextView>();
 
     Handler handler = new Handler();
 
@@ -58,9 +60,6 @@ public class Table extends AppCompatActivity {
     Hand playerHand_1 = new Hand();
     Hand dealerHand_0 = new Hand();
     Hand dealerHand_1 = new Hand();
-
-
-
 
 
     @Override
@@ -71,12 +70,10 @@ public class Table extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         TextView dealer = (TextView) findViewById(R.id.dealer_tile_0);
 
-        setPlayerTileViews();
+        setTileViews();
 
         unSelectedMargin = getMargin(dealer);
-        }
-
-
+    }
 
 
     public void selectPlayerTile(View view) {
@@ -85,79 +82,78 @@ public class Table extends AppCompatActivity {
         TextView deal = (TextView) findViewById(R.id.deal);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
 
-        if(tilesDealt && tilesSelected < 2 && params.bottomMargin == unSelectedMargin) {
+        if (tilesDealt && tilesSelected < 2 && params.bottomMargin == unSelectedMargin) {
 
 
             params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin + 30);
-                view.setLayoutParams(params);
+            view.setLayoutParams(params);
 
 
-                switch (view.getId()) {
+            switch (view.getId()) {
 
-                    case R.id.player_tile_0:
-                        tilesSelected++;
-                        tile = playerTiles.get(0);
-                        //tile.setViewId(R.id.player_tile_0);
+                case R.id.player_tile_0:
+                    tilesSelected++;
+                    tile = playerTiles.get(0);
+                    //tile.setViewId(R.id.player_tile_0);
 
-                        if (playerHand_0.getTile0() == null) {
-                            playerHand_0.setTile0(tile);
-                            Log.e("tileline85", "selectPlayerTile: ");
-                            Log.e("tile86",playerHand_0.tile0.getName() );
-                            break;
-                        } else {
-                            playerHand_0.setTile1(tile);
-                            break;
+                    if (playerHand_0.getTile0() == null) {
+                        playerHand_0.setTile0(tile);
+                        Log.e("tileline85", "selectPlayerTile: ");
+                        Log.e("tile86", playerHand_0.tile0.getName());
+                        break;
+                    } else {
+                        playerHand_0.setTile1(tile);
+                        break;
 
-                        }
+                    }
 
-                    case R.id.player_tile_1:
-                        tilesSelected++;
-                        tile = playerTiles.get(1);
-                        //tile.setViewId(R.id.player_tile_1);
+                case R.id.player_tile_1:
+                    tilesSelected++;
+                    tile = playerTiles.get(1);
+                    //tile.setViewId(R.id.player_tile_1);
 
-                        if (playerHand_0.getTile0() == null) {
-                            playerHand_0.setTile0(tile);
-                            break;
-                        } else {
-                            playerHand_0.setTile1(tile);
-                            break;
+                    if (playerHand_0.getTile0() == null) {
+                        playerHand_0.setTile0(tile);
+                        break;
+                    } else {
+                        playerHand_0.setTile1(tile);
+                        break;
 
-                        }
+                    }
 
-                    case R.id.player_tile_2:
-                        tilesSelected++;
-                        tile = playerTiles.get(2);
-                        //tile.setViewId(R.id.player_tile_2);
+                case R.id.player_tile_2:
+                    tilesSelected++;
+                    tile = playerTiles.get(2);
+                    //tile.setViewId(R.id.player_tile_2);
 
-                        if (playerHand_0.getTile0() == null) {
-                            playerHand_0.setTile0(tile);
-                            break;
-                        } else {
-                            playerHand_0.setTile1(tile);
-                            break;
+                    if (playerHand_0.getTile0() == null) {
+                        playerHand_0.setTile0(tile);
+                        break;
+                    } else {
+                        playerHand_0.setTile1(tile);
+                        break;
 
-                        }
+                    }
 
-                    case R.id.player_tile_3:
-                        tilesSelected++;
-                        tile = playerTiles.get(3);
-                        //tile.setViewId(R.id.player_tile_3);
+                case R.id.player_tile_3:
+                    tilesSelected++;
+                    tile = playerTiles.get(3);
+                    //tile.setViewId(R.id.player_tile_3);
 
-                        if (playerHand_0.getTile0() == null) {
-                            playerHand_0.setTile0(tile);
-                            break;
-                        } else {
-                            playerHand_0.setTile1(tile);
-                            break;
+                    if (playerHand_0.getTile0() == null) {
+                        playerHand_0.setTile0(tile);
+                        break;
+                    } else {
+                        playerHand_0.setTile1(tile);
+                        break;
 
-                        }
-
-
-                }
+                    }
 
 
+            }
 
-        }else {
+
+        } else {
 
             if (tilesDealt && tilesSelected > 0 && params.bottomMargin > unSelectedMargin) {
                 params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
@@ -192,7 +188,7 @@ public class Table extends AppCompatActivity {
                     case R.id.player_tile_2:
                         tilesSelected--;
                         tile = playerTiles.get(2);
-                      //  tile.setViewId(0);
+                        //  tile.setViewId(0);
                         if (tile == playerHand_0.getTile0()) {
                             playerHand_0.setTile0(null);
                             break;
@@ -204,7 +200,7 @@ public class Table extends AppCompatActivity {
                     case R.id.player_tile_3:
                         tilesSelected--;
                         tile = playerTiles.get(0);
-                    //    tile.setViewId(0);
+                        //    tile.setViewId(0);
                         if (tile == playerHand_0.getTile0()) {
                             playerHand_0.setTile0(null);
                             break;
@@ -217,27 +213,19 @@ public class Table extends AppCompatActivity {
         }
 
 
-        if(tilesSelected == 2){
+        if (tilesSelected == 2) {
             deal.setTextColor(Color.GREEN);
-        }else{
+        } else {
             deal.setTextColor(Color.BLACK);
         }
-
 
 
     }
 
 
-
-
-
-
-
     //-------DEAL
 
     public void deal(View view) {
-
-
 
 
         //-----this runs whn deal is first pressed
@@ -268,6 +256,18 @@ public class Table extends AppCompatActivity {
                 handler.postDelayed(new TileFlip(playerTexView, tempTile, handler, context), delay);
 
             }
+            // populates dealer tile array
+            for (int i = 0; i < 4; i++) {
+
+                int tile = random.nextInt(deck.size());
+
+                tempTile = deck.get(tile);
+                tempTile.setViewId(dealerTileViews.get(i).getId());
+                dealerTiles.add(tempTile);
+                deck.remove(tile);
+            }
+
+
             delay = 1000;
 
             deck = new ArrayList<Tile>();
@@ -276,42 +276,30 @@ public class Table extends AppCompatActivity {
         TextView deal = (TextView) findViewById(R.id.deal);
         deal.setText(getResources().getString(R.string.select));
 
-         if(tilesDealt && tilesSelected == 2){
+        if (tilesDealt && tilesSelected == 2) {
 
-             for(int i = 0; i < playerTiles.size(); i++){
-              Tile  tempTile = playerTiles.get(i);
-              if(tempTile != playerHand_0.tile0 && tempTile != playerHand_0.tile1 && playerHand_1.tile0 == null){
-                  playerHand_1.tile0 = playerTiles.get(i);
-                  continue;
-              }
-                 if(tempTile != playerHand_0.tile0 && tempTile != playerHand_0.tile1 && playerHand_1.tile1 == null){
-                     playerHand_1.tile1 = playerTiles.get(i);
-                 }
+            for (int i = 0; i < playerTiles.size(); i++) {
+                Tile tempTile = playerTiles.get(i);
+                if (tempTile != playerHand_0.tile0 && tempTile != playerHand_0.tile1 && playerHand_1.tile0 == null) {
+                    playerHand_1.tile0 = playerTiles.get(i);
+                    continue;
+                }
+                if (tempTile != playerHand_0.tile0 && tempTile != playerHand_0.tile1 && playerHand_1.tile1 == null) {
+                    playerHand_1.tile1 = playerTiles.get(i);
+                }
 
-             }
+            }
 
 
-
-           playerHand_0.setHandValues();
-           playerHand_1.setHandValues();
-           Hand.findHighHand(playerHand_0,playerHand_1);
-           movePlayerViews(playerHand_0,playerHand_1);
-         }
+            playerHand_0.setHandValues();
+            playerHand_1.setHandValues();
+            Hand.findHighHand(playerHand_0, playerHand_1);
+            movePlayerViews(playerHand_0, playerHand_1);
+        }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    public void setPlayerTileViews() {
+    public void setTileViews() {
 
 
         TextView playerTile0 = (TextView) findViewById(R.id.player_tile_0);
@@ -319,27 +307,20 @@ public class Table extends AppCompatActivity {
         TextView playerTile2 = (TextView) findViewById(R.id.player_tile_2);
         TextView playerTile3 = (TextView) findViewById(R.id.player_tile_3);
 
-
-
+        TextView dealerTile0 = (TextView) findViewById(R.id.dealer_tile_0);
+        TextView dealerTile1 = (TextView) findViewById(R.id.dealer_tile_1);
+        TextView dealerTile2 = (TextView) findViewById(R.id.dealer_tile_2);
+        TextView dealerTile3 = (TextView) findViewById(R.id.dealer_tile_3);
 
         playerTileViews.add(playerTile0);
         playerTileViews.add(playerTile1);
         playerTileViews.add(playerTile2);
         playerTileViews.add(playerTile3);
 
-        //set coordinates
-        playerTile0X = playerTileViews.get(0).getX();
-        playerTile0Y = playerTileViews.get(0).getY();
-        playerTile1X = playerTileViews.get(1).getX();
-        playerTile1Y = playerTileViews.get(1).getY();
-        playerTile2X = playerTileViews.get(2).getX();
-        playerTile2Y = playerTileViews.get(2).getY();
-        playerTile3X = playerTileViews.get(3).getX();
-        playerTile3Y = playerTileViews.get(3).getY();
-
-
-
-
+        dealerTileViews.add(dealerTile0);
+        dealerTileViews.add(dealerTile1);
+        dealerTileViews.add(dealerTile2);
+        dealerTileViews.add(dealerTile3);
 
 
     }
@@ -351,14 +332,10 @@ public class Table extends AppCompatActivity {
     }
 
 
-
-
-
-
     //------move tiles
-    public void movePlayerViews(Hand playerHand_0, Hand playerHand_1){
-        Hand highHand = (playerHand_0.isHighHand())? playerHand_0 : playerHand_1;
-        Hand lowHand = (playerHand_0.isHighHand())? playerHand_1 : playerHand_0;
+    public void movePlayerViews(Hand playerHand_0, Hand playerHand_1) {
+        Hand highHand = (playerHand_0.isHighHand()) ? playerHand_0 : playerHand_1;
+        Hand lowHand = (playerHand_0.isHighHand()) ? playerHand_1 : playerHand_0;
 
         TextView playerTile0 = (TextView) findViewById(R.id.player_tile_0);
         TextView playerTile1 = (TextView) findViewById(R.id.player_tile_1);
@@ -366,47 +343,28 @@ public class Table extends AppCompatActivity {
         TextView playerTile3 = (TextView) findViewById(R.id.player_tile_3);
 
 
-
-
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) playerTile0.getLayoutParams();
-            if(params.bottomMargin > unSelectedMargin) {
-                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
-                playerTile0.setLayoutParams(params);
-            }
-         params = (ViewGroup.MarginLayoutParams) playerTile1.getLayoutParams();
-        if(params.bottomMargin > unSelectedMargin) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) playerTile0.getLayoutParams();
+        if (params.bottomMargin > unSelectedMargin) {
+            params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
+            playerTile0.setLayoutParams(params);
+        }
+        params = (ViewGroup.MarginLayoutParams) playerTile1.getLayoutParams();
+        if (params.bottomMargin > unSelectedMargin) {
             params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
             playerTile1.setLayoutParams(params);
         }
 
         params = (ViewGroup.MarginLayoutParams) playerTile2.getLayoutParams();
-        if(params.bottomMargin > unSelectedMargin) {
+        if (params.bottomMargin > unSelectedMargin) {
             params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
             playerTile2.setLayoutParams(params);
         }
 
         params = (ViewGroup.MarginLayoutParams) playerTile3.getLayoutParams();
-        if(params.bottomMargin > unSelectedMargin) {
+        if (params.bottomMargin > unSelectedMargin) {
             params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin - 30);
             playerTile3.setLayoutParams(params);
         }
-
-
-
-        playerTile0X = playerTile0.getX();
-        playerTile0Y = playerTile0.getY();
-        playerTile1X = playerTile1.getX();
-        playerTile1Y = playerTile1.getY();
-        playerTile2X = playerTile2.getX();
-        playerTile2Y = playerTile2.getY();
-        playerTile3X = playerTile3.getX();
-        playerTile3Y = playerTile3.getY();
-
-
-
-
-
-
 
 
         TextView highHandView0 = (TextView) findViewById(highHand.tile0.getViewId());
@@ -415,45 +373,38 @@ public class Table extends AppCompatActivity {
         TextView lowHandView1 = (TextView) findViewById(lowHand.tile1.getViewId());
 
 
-
         highHandView0.setRotation(90);
-       highHandView1.setRotation(90);
+        highHandView1.setRotation(90);
         String viewx = String.valueOf(highHandView0.getX());
         String viewy = String.valueOf(highHandView0.getY());
 
-        Log.e("highhandx = ", String.valueOf(highHand0X));
-        Log.e("highhandy = ", String.valueOf(highHand0Y));
 
-        Log.e("viewx = ", viewx + " " + viewy);
-
-
-
-
-
-       highHandView0.animate().x(500).y(380).setDuration(600);
-       highHandView1.animate().x(500).y(500).setDuration(600);
-       lowHandView0.animate().x(700).setDuration(600);
-       lowHandView1.animate().x(820).setDuration(600);
-       // String hh = String.valueOf(hh0x);
-        //String h1 = String.valueOf(hh0y);
+        highHandView0.animate().x(500).y(380).setDuration(600);
+        highHandView1.animate().x(500).y(500).setDuration(600);
+        lowHandView0.animate().x(700).setDuration(600);
+        lowHandView1.animate().x(820).setDuration(600);
 
         TextView test = (TextView) findViewById(R.id.testView);
 
-        String testText = highHand.getHandName() + " " + highHand.getHandRank()  + " is wong " + highHand.isWong + " is gong " + highHand.isGong  +"tile 0 = " + highHand.tile0.getName() + " tile1 = " + highHand.tile1.getName() + " points " + highHand.getNumberOfPoints();
+        String testText = highHand.getHandName() + " " + highHand.getHandRank() + " is wong " + highHand.isWong + " is gong " + highHand.isGong + "tile 0 = " + highHand.tile0.getName() + " tile1 = " + highHand.tile1.getName() + " points " + highHand.getNumberOfPoints();
         test.setText(testText);
 
         Log.e("animate", "ran");
-        //Log.e("value of hhox hhoy ",   hh + " " + h1);
 
 
-
-
-
+        setDealerTiles();
 
 
     }
 
+    public void setDealerTiles(){
+        long delay = 1300;
+        Context context = Table.this;
+        handler.postDelayed(new DealerTileFlip(handler,context,dealerTileViews.get(0), dealerTileViews.get(1),dealerTileViews.get(2),dealerTileViews.get(3),dealerTiles.get(0),dealerTiles.get(1), dealerTiles.get(2),dealerTiles.get(3)),delay);
 
+
+
+    }
 
 
 }

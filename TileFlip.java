@@ -23,7 +23,6 @@ public class TileFlip implements Runnable {
 
             case 1:
                 x++;
-                System.out.println("runnable ran");
                 Drawable tileBack = getBuildVersionTileSide(context);
                 view.setBackground(tileBack);
                 handler.postDelayed(this, 90);
@@ -31,7 +30,6 @@ public class TileFlip implements Runnable {
 
 
             case 2:
-                System.out.println("runnable 3");
                 Drawable tileFace = getBuildVersionTileFace(tile, context);
                 view.setBackground(tileFace);
                 handler.removeCallbacks(this);
