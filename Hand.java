@@ -570,7 +570,7 @@ public class Hand {
 
         }//===== end of findWongGong
 
-        
+
 
         //--- splits day pair
 
