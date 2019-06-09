@@ -395,6 +395,7 @@ public class Table extends AppCompatActivity {
         setDealerTiles();
 
 
+
     }
 
     public void setDealerTiles(){
