@@ -251,345 +251,202 @@ public class Hand {
     }
 
 
+    // sorts dealer tiles
     public void setDealerTileValues(ArrayList<Tile> dealerTiles, Hand hand0, Hand hand1) {
 
-        Boolean unsplitablePair = false;
-
-        String tileName = "";
-        //--- checking for pairs
-        for (int i = 0; i < dealerTiles.size() - 1; i++) {
-
-            Boolean carryOn = true;
-
-            tileName = dealerTiles.get(i).getName();
-            for (int j = i + 1; j <= dealerTiles.size(); i++) {
-
-                if (tileName.equals(dealerTiles.get(j).getName())) {
-                    hand0.tile0 = dealerTiles.get(i);
-                    hand0.tile0 = dealerTiles.get(j);
-                    hand0.isPair = true;
-                    hand0.handRank = hand0.tile0.getPairRank();
-                    hand0.handName = hand0.tile0.getName();
-                    carryOn = false;
-                    break;
-                }
-
-            }
-
-            if (!carryOn) {
-                break;
-            }
-        }
+        // my new method
+        boolean handIsSet = true;
+        int numberOfPairs = 0;
+        int hand1Tile0dots;
+        int hand1Tile1dots;
+        int addedDotValue;
 
 
-        // ---- loads other hand1 if hand0 = pair
-        if (hand0.isPair) {
-            for (int i = 0; i < dealerTiles.size(); i++) {
+        ArrayList<Tile> tileSet = new ArrayList<Tile>();
+        tileSet.add(hand0.tile0);
+        tileSet.add(hand0.tile1);
+        tileSet.add(hand1.tile0);
+        tileSet.add(hand1.tile1);
 
-                if (tileName.equals(dealerTiles.get(i).getName())) {
-                    continue;
-                }
+        ArrayList<String> tileNames = new ArrayList<String>();
+        tileNames.add(hand0.tile0.getName());
+        tileNames.add(hand0.tile1.getName());
+        tileNames.add(hand1.tile0.getName());
+        tileNames.add(hand1.tile1.getName());
 
-                if (hand1.tile0 == null) {
-                    hand1.tile0 = dealerTiles.get(i);
-                }
-                if (hand1.tile1 == null) {
-                    hand1.tile1 = dealerTiles.get(i);
+        for (int i = 0; i < tileNames.size() - 1; i++) {
+
+            for (int j = i + 1; j < tileNames.size(); i++) {
+                if (tileNames.get(i).equals(tileNames.get(j))) {
+                    if (!hand0.isPair) {
+                        hand0.tile0 = tileSet.get(i);
+                        hand0.tile1 = tileSet.get(j);
+                        hand0.isPair = true;
+                        numberOfPairs++;
+                        continue;
+                    } else {
+
+                        hand1.tile0 = tileSet.get(i);
+                        hand1.tile1 = tileSet.get(j);
+                        hand1.isPair = true;
+                        numberOfPairs++;
+                        handIsSet = true;
+                        continue;
+                    }
                 }
             }
-        }
 
 
+            //populates non pair hand
+            if (numberOfPairs == 1) {
 
-        //---- populates non pair hands
+                String handName = hand0.getHandName();
 
-        if(!hand0.isPair){
-            hand0.tile0= dealerTiles.get(0);
-            hand0.tile1 = dealerTiles.get(1);
-            hand1.tile0 = dealerTiles.get(2);
-            hand1.tile1 = dealerTiles.get(3);
-        }
+                for (i = 0; i < dealerTiles.size(); i++) {
 
-        //---- checks for hand1 pair
-
-        if (hand1.tile0.getName().equals(hand1.tile1.getName())) {
-            hand1.isPair = true;
-            hand1.handName = hand1.tile1.getName();
-            hand1.handRank = hand1.tile1.getPairRank();
-        }
-
-
-        //----- sets unsplitable pair
-        if (hand0.isPair && (hand0.tile0.getName().equals(Constants.ngor) || hand0.tile0.getName().equals(Constants.bon) || hand0.tile0.getName().equals(Constants.chop_ng) || hand0.tile0.getName().equals(Constants.chong) || hand0.tile0.getName().equals(Constants.mooy) || hand0.tile0.getName().equals(Constants.ping) || hand0.tile0.getName().equals(Constants.foo))) {
-            unsplitablePair = true;
-        }
-
-
-
-
-
-
-        // -- gee joon splits
-        if (hand0.getHandName().equals(Constants.gee_joon) || hand1.getHandName().equals(Constants.gee_joon) && (!hand0.isPair || !hand1.isPair)) {
-            Hand geejoon = (hand0.handName.equals(Constants.gee_joon))? hand0 : hand1;
-            Hand notgeejoon = (hand0.handName.equals(Constants.gee_joon)) ? hand1 : hand0;
-
-            if (notgeejoon.tile0.getNumberOfSpots() >= 4 && notgeejoon.tile0.getNumberOfSpots() <= 6 && notgeejoon.tile1.getNumberOfSpots() >= 4 && notgeejoon.tile0.getNumberOfSpots() <= 6) {
-
-                Tile tempGeeJoonTile = geejoon.tile0;
-                Tile tempNotGeeJoonTile = notgeejoon.tile0;
-
-                geejoon.tile0 = tempNotGeeJoonTile;
-                notgeejoon.tile0 = tempGeeJoonTile;
-
-                geejoon.isPair = false;
-                unsplitablePair = true;
-                }
-
-
-        }
-
-        //--- check for wong
-
-        if(hand0.tile0.getName().equals(Constants.teen) || hand0.tile0.getName().equals(Constants.day) || hand0.tile1.getName().equals(Constants.teen)|| hand0.tile1.getName().equals(Constants.day) || hand1.tile0.getName().equals(Constants.teen) || hand1.tile0.getName().equals(Constants.day) || hand1.tile1.getName().equals(Constants.teen)|| hand1.tile1.getName().equals(Constants.day)){
-            boolean hasWongGong = false;
-
-            if(!isPair) {
-
-                int[] nonTeenDay = new int[4];
-                nonTeenDay[0] = hand0.tile0.getNumberOfSpots();
-                nonTeenDay[1] = hand0.tile1.getNumberOfSpots();
-                nonTeenDay[2] = hand1.tile0.getNumberOfSpots();
-                nonTeenDay[3] = hand1.tile1.getNumberOfSpots();
-
-                for (int i = 0; i < nonTeenDay.length; i++) {
-                    if (nonTeenDay[i] >= 8 && nonTeenDay[i] <= 9) {
-                        hasWongGong = true;
+                    if (!dealerTiles.get(i).getName().equals(handName)) {
+                        hand1.tile0 = (hand1.tile0 == null) ? dealerTiles.get(i) : hand1.tile0;
                         break;
                     }
-                }
-
-                if(hasWongGong){
-                    Tile teen = null;
-                    Tile day = null;
-                    Tile nine0 = null;  Tile eight0 = null; Tile eight1 = null; Tile non0 = null; Tile non1 = null;
-
-                    switch(hand0.tile0.getNumberOfSpots()){
-
-                        case 12:
-                          teen =  hand0.tile0;
-                            break;
-
-                        case 2:
-                           teen =  hand0.tile0;
-                           break;
-
-                        case 9:
-                                nine0 = hand0.tile0;
-                                break;
-
-                        case 8:
-                            if(eight0 == null){
-                                eight0 = hand0.tile0;
-                                break;
-                            }else{
-                                eight1 = hand0.tile0;
-                                break;
-                            }
-
-                        default:
-                            if(non0 == null){
-                                non0 = hand0.tile0;
-                                break;
-                            }else{
-                                non1 = hand0.tile0;
-                                break;
-                            }
-
+                    if (!dealerTiles.get(i).getName().equals(handName)) {
+                        hand1.tile1 = (hand0.tile1 == null) ? dealerTiles.get(i) : hand1.tile1;
+                        break;
                     }
-
-                    switch(hand0.tile1.getNumberOfSpots()){
-
-                        case 12:
-                            teen =  hand0.tile1;
-                            break;
-
-                        case 2:
-                            teen =  hand0.tile1;
-                            break;
-
-                        case 9:
-                            nine0 = hand0.tile1;
-                            break;
-
-                        case 8:
-                            if(eight0 == null){
-                                eight0 = hand0.tile1;
-                                break;
-                            }else{
-                                eight1 = hand0.tile1;
-                                break;
-                            }
-
-                        default:
-                            if(non0 == null){
-                                non0 = hand0.tile1;
-                                break;
-                            }else{
-                                non1 = hand0.tile1;
-                                break;
-                            }
-
-                    }
-
-                    switch(hand1.tile0.getNumberOfSpots()){
-
-                        case 12:
-                            teen =  hand1.tile0;
-                            break;
-
-                        case 2:
-                            teen =  hand1.tile0;
-                            break;
-
-                        case 9:
-                            nine0 = hand0.tile0;
-                            break;
-
-                        case 8:
-                            if(eight0 == null){
-                                eight0 = hand1.tile0;
-                                break;
-                            }else{
-                                eight1 = hand1.tile0;
-                                break;
-                            }
-
-                        default:
-                            if(non0 == null){
-                                non0 = hand1.tile0;
-                                break;
-                            }else{
-                                non1 = hand1.tile0;
-                                break;
-                            }
-
-                    }
-
-                    switch(hand1.tile1.getNumberOfSpots()){
-
-                        case 12:
-                            teen =  hand1.tile1;
-                            break;
-
-                        case 2:
-                            teen =  hand1.tile1;
-                            break;
-
-                        case 9:
-                            nine0 = hand1.tile1;
-                            break;
-
-                        case 8:
-                            if(eight0 == null){
-                                eight0 = hand1.tile1;
-                                break;
-                            }else{
-                                eight1 = hand1.tile1;
-                                break;
-                            }
-
-                        default:
-                            if(non0 == null){
-                                non0 = hand1.tile1;
-                                break;
-                            }else{
-                                non1 = hand1.tile1;
-                                break;
-                            }
-
-                    }
-
-                  /* ArrayList<Tile> findWong = new ArrayList <Tile>();
-                    findWong.add(teen);
-                    findWong.add(day);findWong.add(nine0);findWong.add(eight0);findWong.add(eight1);findWong.add(non0);findWong.add(non1);
-
-                    for(int i = 0; i < findWong.size(); i++){
-                       if
-                    }*/
-
-                  if(teen != null){
-                      hand0.tile0= teen;
-                      teen = null;
-                  }
-                  if(teen == null && !hand0.tile0.getName().equals(Constants.teen)){
-                      hand0.tile0 = day;
-                      day = null;
-                  }
-                  if(day != null){
-                      hand1.tile0= day;
-                      day = null;
-                  }
-
-                  if(!hand1.tile0.getName().equals(Constants.day)){
-                      hand1.tile0= non0;
-                      non0 = null;
-                  }
-
-                  if(nine0 != null){
-                      hand0.tile1 = nine0;
-                      nine0 = null;
-                  }
-
-                  if(nine0 == null && hand0.tile1.getNumberOfSpots() != 9){
-                      hand0.tile1= eight0;
-                      eight0=null;
-                  }
-
-                  if(eight1 != null ){
-                      hand1.tile1 = eight1;
-                      eight1 = null;
-
-                  }
-
-                  if(hand1.tile1.getNumberOfSpots()!= 8){
-                      hand1.tile1 = non1;
-                      non1 = null;
-                  }
-
-
-
-
 
                 }
-
             }
 
 
+            // sets unsplitable pairs
+            handIsSet = (hand0.tile0.getName().equals(Constants.ngor) || hand0.tile0.getName().equals(Constants.bon) || hand0.tile0.getName().equals(Constants.chop_ng) || hand0.tile0.getName().equals(Constants.chong) || hand0.tile0.getName().equals(Constants.mooy) || hand0.tile0.getName().equals(Constants.ping) || hand0.tile0.getName().equals(Constants.foo)) ? true : false;
+
+        }
 
 
-        }//===== end of findWongGong
+        //==splits geejoon
+        hand1Tile0dots = hand1.tile0.getNumberOfSpots();
+        hand1Tile1dots = hand1.tile1.getNumberOfSpots();
+
+        if (hand1.getHandName().equals(Constants.gee_joon) && !handIsSet) {
+
+            String hand1spots = String.valueOf(hand1Tile0dots) + String.valueOf(hand1Tile1dots);
+
+            int spots = Integer.valueOf(hand1spots);
+
+            switch (spots) {
+
+                case 64:
+                case 65:
+                case 66:
+                case 45:
+                case 46:
+                case 54:
+                case 56:
+                    Tile temp = hand0.tile0;
+                    hand0.tile0 = hand1.tile0;
+                    hand1.tile0 = temp;
+                    handIsSet = true;
+                    break;
+            }
+
+        }
+
+        addedDotValue = (hand1Tile0dots + hand1Tile0dots) % 10;
 
 
+        // ----- splits day tiles
+        if (hand0.getHandName().equals(Constants.day) && !handIsSet) {
 
-        //--- splits day pair
+            String hand1spots = String.valueOf(hand1Tile0dots) + String.valueOf(hand1Tile1dots);
 
-        if(hand0.getHandName().equals(Constants.day)|| hand1.getHandName().equals(Constants.day) && (!hand0.isPair || !hand1.isPair)){
+            int spots = Integer.valueOf(hand1spots);
 
-             Hand day = (hand0.getHandName().equals(Constants.day))?hand0:hand1;
-             Hand notDay = (hand0.equals(Constants.day))? hand1:hand0;
+            switch (spots) {
 
-             int notDayTile0 = notDay.tile0.getNumberOfSpots();
-             int notDayTile1 = notDay.tile1.getNumberOfSpots();
-
+                case 46:
+                case 64:
+                case 911:
+                case 119:
+                    Tile temp = hand0.tile0;
+                    hand0.tile0 = hand1.tile0;
+                    hand1.tile0 = temp;
+                    handIsSet = true;
+                    break;
+            }
 
 
         }
 
 
+        //---- spits teen
+        if (hand0.getHandName().equals(Constants.teen) && !handIsSet) {
+
+            String hand1spots = String.valueOf(hand1Tile0dots) + String.valueOf(hand1Tile1dots);
+
+            int spots = Integer.valueOf(hand1spots);
+
+            switch (spots) {
+
+                case 46:
+                case 64:
+                case 911:
+                case 119:
+                    Tile temp = hand0.tile0;
+                    hand0.tile0 = hand1.tile0;
+                    hand1.tile0 = temp;
+                    handIsSet = true;
+                    break;
+            }
 
 
+        }
+
+
+        //-------splits 99
+        if (hand0.getHandName().equals(Constants.chop_gow) && !handIsSet) {
+            if (hand1Tile0dots == 2 || hand1Tile0dots == 10 || hand1Tile0dots == 12 || hand1Tile1dots == 2 || hand1Tile1dots == 10 || hand1Tile1dots == 12) {
+
+                Tile temp = hand0.tile0;
+                hand0.tile0 = hand1.tile0;
+                hand1.tile0 = temp;
+                handIsSet = true;
+
+            }
+        }
+
+
+        //=== splits 88
+
+        if (hand0.tile0.getNumberOfSpots() == 8 && !handIsSet) {
+
+            if (hand1Tile0dots == 2 || hand1Tile0dots == 9 || hand1Tile0dots == 10 || hand1Tile0dots == 11 || hand1Tile0dots == 12 || hand1Tile1dots == 2 || hand1Tile1dots == 9 || hand1Tile1dots == 10 || hand1Tile1dots == 11 || hand1Tile1dots == 12) {
+
+                Tile temp = hand0.tile0;
+                hand0.tile0 = hand1.tile0;
+                hand1.tile0 = temp;
+                handIsSet = true;
+
+            }
+
+
+            //---Splits 77
+
+            if (hand0.tile0.getNumberOfSpots() == 7 && !handIsSet) {
+
+                if (hand1Tile0dots == 2 || hand1Tile0dots == 10 || hand1Tile0dots == 11 || hand1Tile0dots == 12 || hand1Tile1dots == 2 || hand1Tile1dots == 10 || hand1Tile1dots == 11 || hand1Tile1dots == 12) {
+
+                    Tile temp = hand0.tile0;
+                    hand0.tile0 = hand1.tile0;
+                    hand1.tile0 = temp;
+                    handIsSet = true;
+
+                }
+
+
+            }//===== end of findWongGong
+
+
+        }
 
     }
-
 }
