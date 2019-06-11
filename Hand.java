@@ -1,6 +1,7 @@
 package tribalway.by.paigow.com.paigowtilesbyrob;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Hand {
 
@@ -8,8 +9,6 @@ public class Hand {
     String handName;
 
     int handRank = 100;
-
-
     int highTileIndividualRank;
     int numberOfPoints;
     Tile tile0 = null;
@@ -20,6 +19,9 @@ public class Hand {
     boolean isGong = false;
     boolean isHighNine = false;
     boolean jeeJoon = false;
+
+    ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> dots = new ArrayList<Integer>();
 
 
     public Tile getTile1() {
@@ -255,7 +257,7 @@ public class Hand {
     public void setDealerTileValues(ArrayList<Tile> dealerTiles, Hand hand0, Hand hand1) {
 
         // my new method
-        boolean handIsSet = true;
+        boolean handIsSet = false;
         int numberOfPairs = 0;
         int hand1Tile0dots;
         int hand1Tile1dots;
@@ -285,6 +287,7 @@ public class Hand {
                         numberOfPairs++;
                         continue;
                     } else {
+
 
                         hand1.tile0 = tileSet.get(i);
                         hand1.tile1 = tileSet.get(j);
@@ -427,27 +430,311 @@ public class Hand {
                 handIsSet = true;
 
             }
+        }
 
 
-            //---Splits 77
+        //---Splits 77
 
-            if (hand0.tile0.getNumberOfSpots() == 7 && !handIsSet) {
+        if (hand0.tile0.getNumberOfSpots() == 7 && !handIsSet) {
 
-                if (hand1Tile0dots == 2 || hand1Tile0dots == 10 || hand1Tile0dots == 11 || hand1Tile0dots == 12 || hand1Tile1dots == 2 || hand1Tile1dots == 10 || hand1Tile1dots == 11 || hand1Tile1dots == 12) {
+            if (hand1Tile0dots == 2 || hand1Tile0dots == 10 || hand1Tile0dots == 11 || hand1Tile0dots == 12 || hand1Tile1dots == 2 || hand1Tile1dots == 10 || hand1Tile1dots == 11 || hand1Tile1dots == 12) {
 
-                    Tile temp = hand0.tile0;
-                    hand0.tile0 = hand1.tile0;
-                    hand1.tile0 = temp;
-                    handIsSet = true;
+                Tile temp = hand0.tile0;
+                hand0.tile0 = hand1.tile0;
+                hand1.tile0 = temp;
+                handIsSet = true;
 
-                }
-                //
-
-
-            }//===== end of findWongGong
+            }
 
 
         }
 
+
+        //----iputs to names Arraylist
+
+        names.add(dealerTiles.get(0).getName());
+        names.add(dealerTiles.get(1).getName());
+        names.add(dealerTiles.get(2).getName());
+        names.add(dealerTiles.get(3).getName());
+
+
+        //----- sets dots ArrayList
+        dots.add(dealerTiles.get(0).getNumberOfSpots());
+        dots.add(dealerTiles.get(1).getNumberOfSpots());
+        dots.add(dealerTiles.get(2).getNumberOfSpots());
+        dots.add(dealerTiles.get(3).getNumberOfSpots());
+
+
+        //---checks high nine
+
+        if (names.contains((Constants.teen)) || names.contains(Constants.day) && !handIsSet) {
+            if (dots.contains(7)) {
+                Iterator<Tile> it = dealerTiles.iterator();
+
+                Tile teen = null;
+                Tile day = null;
+                Tile seven0 = null;
+                Tile seven1 = null;
+                Tile non0 = null;
+                Tile non1 = null;
+
+                while (it.hasNext()) {
+                    Tile temp = it.next();
+
+                    switch (temp.getNumberOfSpots()){
+                        case 12:
+                            teen = temp;
+                            break;
+
+                        case 2:
+                            day = temp;
+                            break;
+
+                        case 7:
+                            if(seven0 ==null ){
+                                seven0 = temp;
+                                break;
+                                }else{
+                                seven1 = temp;
+                                break;
+                            }
+
+                            default:
+                                if(non0 == null){
+                                    non0= temp;
+                                    break;
+                                }else{
+                                    non1 = temp;
+                                    break;
+                                }
+                    }
+
+                    hand0.tile0 = (teen != null)?teen:day;
+                    hand0.tile1 = seven0;
+                    hand1.tile0 = (day != hand0.tile0)? day:non0;
+                    hand1.tile1 = (seven1 != null)?seven1:non1;
+
+                    isHighNine = true;
+
+
+
+                }
+
+
+               }
+        }
+
+
+        //--- checks gong
+
+        if (names.contains((Constants.teen)) || names.contains(Constants.day) && !handIsSet && !isHighNine) {
+            if (dots.contains(8)) {
+                Iterator<Tile> it = dealerTiles.iterator();
+
+                Tile teen = null;
+                Tile day = null;
+                Tile eight0 = null;
+                Tile eight1 = null;
+                Tile non0 = null;
+                Tile non1 = null;
+
+                while (it.hasNext()) {
+                    Tile temp = it.next();
+
+                    switch (temp.getNumberOfSpots()){
+                        case 12:
+                            teen = temp;
+                            break;
+
+                        case 2:
+                            day = temp;
+                            break;
+
+                        case 8:
+                            if(eight0 ==null ){
+                                eight0 = temp;
+                                break;
+                            }else{
+                                eight1 = temp;
+                                break;
+                            }
+
+                        default:
+                            if(non0 == null){
+                                non0= temp;
+                                break;
+                            }else{
+                                non1 = temp;
+                                break;
+                            }
+                    }
+
+                    hand0.tile0 = (teen != null)?teen:day;
+                    hand0.tile1 = eight0;
+                    hand1.tile0 = (day != hand0.tile0)? day:non0;
+                    hand1.tile1 = (eight1 != null)?eight1:non1;
+
+                    isGong = true;
+
+
+
+                }
+
+
+            }
+        }
+
+
+        //----- checks wong
+
+        if (names.contains((Constants.teen)) || names.contains(Constants.day) && !handIsSet && !isHighNine && !isGong) {
+            if (dots.contains(9)) {
+                Iterator<Tile> it = dealerTiles.iterator();
+
+                Tile teen = null;
+                Tile day = null;
+                Tile nine0 = null;
+                Tile nine1 = null;
+                Tile non0 = null;
+                Tile non1 = null;
+
+                while (it.hasNext()) {
+                    Tile temp = it.next();
+
+                    switch (temp.getNumberOfSpots()){
+                        case 12:
+                            teen = temp;
+                            break;
+
+                        case 2:
+                            day = temp;
+                            break;
+
+                        case 9:
+                            if(nine0 ==null ){
+                                nine0 = temp;
+                                break;
+                            }else{
+                                nine1 = temp;
+                                break;
+                            }
+
+                        default:
+                            if(non0 == null){
+                                non0= temp;
+                                break;
+                            }else{
+                                non1 = temp;
+                                break;
+                            }
+                    }
+
+                    hand0.tile0 = (teen != null)?teen:day;
+                    hand0.tile1 = nine0;
+                    hand1.tile0 = (day != hand0.tile0)? day:non0;
+                    hand1.tile1 = (nine1 != null)?nine1:non1;
+
+                    isWong = true;
+
+                    }
+
+
+            }
+        }
+
+
+
+
+        // sets wong over gong  (exception a foxwoods)
+        if(isGong && dots.contains(11)&& dots.contains(9)){
+            Tile teenOrDay = null;
+            Tile nine = null;
+            Tile eight = null;
+            Tile eleven = null;
+            Tile temp = null;
+
+            Iterator<Tile> it = dealerTiles.iterator();
+
+            while(it.hasNext()){
+                temp = it.next();
+
+                switch(temp.getNumberOfSpots()){
+
+                    case 2:case 12:
+                        teenOrDay = temp;
+                        break;
+
+                    case 9:
+                        nine = temp;
+                        break;
+
+                    case 8:
+                        eight = temp;
+                        break;
+
+                    case 11:
+                        eleven = temp;
+                        break;
+
+
+                }
+
+            }
+
+            hand0.tile0 = teenOrDay;
+            hand0.tile1 = nine;
+            hand1.tile0 = eight;
+            hand1.tile1 = eleven;
+
+            isGong = false; isWong = true; handIsSet = true;
+        }
+
+
+        // sets wong over high nine (exception b foxwoods)
+        if(isHighNine && dots.contains(11)&& dots.contains(9)){
+            Tile teenOrDay = null;
+            Tile nine = null;
+            Tile seven = null;
+            Tile eleven = null;
+            Tile temp = null;
+
+            Iterator<Tile> it = dealerTiles.iterator();
+
+            while(it.hasNext()){
+                temp = it.next();
+
+                switch(temp.getNumberOfSpots()){
+
+                    case 2:case 12:
+                        teenOrDay = temp;
+                        break;
+
+                    case 9:
+                        nine = temp;
+                        break;
+
+                    case 7:
+                        seven = temp;
+                        break;
+
+                    case 11:
+                        eleven = temp;
+                        break;
+
+
+                }
+
+            }
+
+            hand0.tile0 = teenOrDay;
+            hand0.tile1 = nine;
+            hand1.tile0 = seven;
+            hand1.tile1 = eleven;
+
+            isHighNine = false; isWong = true; handIsSet = true;
+        }
+
+
     }
+
 }
