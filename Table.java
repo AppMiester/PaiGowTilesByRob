@@ -295,6 +295,24 @@ public class Table extends AppCompatActivity {
             playerHand_1.setHandValues();
             Hand.findHighHand(playerHand_0, playerHand_1);
             movePlayerViews(playerHand_0, playerHand_1);
+           String best = new Hand().setDealerTileValues(dealerTiles,dealerHand_0,dealerHand_1);
+           System.out.println("best = " + best);
+
+
+        TextView test = (TextView) findViewById(R.id.testView);
+
+
+
+     Hand high = (dealerHand_0.isHighHand())? dealerHand_0:dealerHand_1;
+     Hand low = (!dealerHand_1.isHighHand())? dealerHand_1:dealerHand_0;
+
+     String dealhigh = high.tile0.getNumberOfSpots()+ " " +high.tile1.getNumberOfSpots() + " high= " + high.isHighHand();
+     String dealLow =  low.tile0.getNumberOfSpots()+ " " +  low.tile1.getNumberOfSpots() + " high = " + low.isHighHand();
+
+     String test1 = dealhigh + "\n" + dealLow;
+        test.setText(test1);
+
+
         }
     }
 
@@ -384,10 +402,19 @@ public class Table extends AppCompatActivity {
         lowHandView0.animate().x(700).setDuration(600);
         lowHandView1.animate().x(820).setDuration(600);
 
-        TextView test = (TextView) findViewById(R.id.testView);
-
-        String testText = highHand.getHandName() + " " + highHand.getHandRank() + " is wong " + highHand.isWong + " is gong " + highHand.isGong + "tile 0 = " + highHand.tile0.getName() + " tile1 = " + highHand.tile1.getName() + " points " + highHand.getNumberOfPoints();
-        test.setText(testText);
+//        TextView test = (TextView) findViewById(R.id.testView);
+//
+//        String testText = highHand.getHandName() + " " + highHand.getHandRank() + " is wong " + highHand.isWong + " is gong " + highHand.isGong + "tile 0 = " + highHand.tile0.getName() + " tile1 = " + highHand.tile1.getName() + " points " + highHand.getNumberOfPoints();
+////        test.setText(testText);
+//
+//     Hand high = (dealerHand_0.isHighHand())? dealerHand_0:dealerHand_1;
+//     Hand low = (!dealerHand_1.isHighHand())? dealerHand_1:dealerHand_0;
+//
+//     String dealhigh = high.tile0.getNumberOfSpots()+ " " +high.tile1.getNumberOfSpots() + " " + high.getHandName();
+//     String dealLow =  low.tile0.getNumberOfSpots()+ " " +  low.tile1.getNumberOfSpots() + " " + low.getHandName();
+//
+//     String test1 = dealhigh + "\n" + dealLow;
+//        test.setText(testText);
 
         Log.e("animate", "ran");
 
@@ -403,9 +430,9 @@ public class Table extends AppCompatActivity {
         Context context = Table.this;
         handler.postDelayed(new DealerTileFlip(handler,context,dealerTileViews.get(0), dealerTileViews.get(1),dealerTileViews.get(2),dealerTileViews.get(3),dealerTiles.get(0),dealerTiles.get(1), dealerTiles.get(2),dealerTiles.get(3)),delay);
 
+        }
 
 
-    }
 
 
 }
