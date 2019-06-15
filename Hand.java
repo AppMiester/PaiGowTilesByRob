@@ -288,10 +288,10 @@ public class Hand {
         // 11 10, 12 6 , 13 6, 14 4, 15 4, 16 11, 17 11, 18 10, 19 10, 20 7 , 21 7
         // 22 6, 23 6, 24 9, 25 9, 26 8, 27 8, 28 7, 29 7, 30 5, 31 5
         ArrayList<Tile> tileSet =  new ArrayList<Tile>();
-        tileSet.add(deck.newDeck.get(7));//8
-        tileSet.add(deck.newDeck.get(2));//teen
-        tileSet.add(deck.newDeck.get(24));//9
-        tileSet.add(deck.newDeck.get(16));//11
+        tileSet.add(deck.newDeck.get(21));//7
+        tileSet.add(deck.newDeck.get(14));//4
+        tileSet.add(deck.newDeck.get(28));//7
+        tileSet.add(deck.newDeck.get(23));//6
 
 
 
@@ -829,9 +829,9 @@ public class Hand {
         }
 
 
-        //----- sets gong over high nine (foxwoods exception c 1st part)
 
-        // sets wong over high nine (exception b foxwoods)
+
+        //----- sets gong over high nine (foxwoods exception c 1st part)
         if (HighNine && dots.contains(4) && dots.contains(8)) {
             Tile teenOrDay = null;
             Tile eight = null;
@@ -927,17 +927,23 @@ public class Hand {
             handIsSet = true;
         }
 
+        testValue = String.valueOf(hand0.tile0.getNumberOfSpots()) + " " + String.valueOf(hand0.tile1.getNumberOfSpots()) + " " + String.valueOf(hand1.tile0.getNumberOfSpots())+ " " + String.valueOf(hand1.tile1.getNumberOfSpots());
+        Log.e("hunt","after last ran " + testValue);
+
 
         if (!handIsSet && !Pair && !HighNine && !Wong && !Gong) {
             bestSequence = SequenceFinder.bestSequenceFinder(tileSet);
             System.out.println("bestSequence" + bestSequence);
-            return bestSequence;
-        }
+            }
+
+        testValue = String.valueOf(hand0.tile0.getNumberOfSpots()) + " " + String.valueOf(hand0.tile1.getNumberOfSpots()) + " " + String.valueOf(hand1.tile0.getNumberOfSpots())+ " " + String.valueOf(hand1.tile1.getNumberOfSpots());
+
+        Log.e("hunt","after h3 ran " + testValue);
         hand0.setHandValues();
         hand1.setHandValues();
         findHighHand(hand0, hand1);
 
-        return "best sequence didnt run";
+       return("");
     }
 
 }
