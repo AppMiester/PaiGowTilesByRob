@@ -81,28 +81,30 @@ public class Hand {
 
 
     public void setHandValues() {
-        System.out.println("setaaa" + this.tile0.getName());
-        System.out.println("setaaa" + this.tile1.getName());
-        System.out.println("setaaa" + this.isGong + this.isHighNine + this.isPair + this.isWong);
+        Log.e("set",this.tile0.getName() + " " + String.valueOf(this.tile0.getNumberOfSpots()));
+        Log.e("set",this.tile1.getName() + " " + String.valueOf(this.tile1.getNumberOfSpots()));
+        Log.e("set",  String.valueOf(this.isGong) + " " + String.valueOf(this.isHighNine) +  "" + String.valueOf(this.isPair) + " " + String.valueOf(this.isWong));
 
         if (tile0.getName().equals(tile1.getName())) {
             isPair = true;
             handRank = tile0.getPairRank();
             handName = Constants.pair;
-            System.out.println("setaaa pair ran");
+
 
 
         }
 
+         Log.e("set", "names = " + String.valueOf(this.tile0.getName().equals(Constants.teen)) + " "+ String.valueOf(this.tile1.getName().equals(Constants.chop_gow)));
+        if (this.tile0.getName().equals(Constants.teen) || this.tile1.getName().equals(Constants.teen)) {
+            Log.e("set", "line 100" + String.valueOf(this.getHandRank()));
+            if (this.tile0.getName().equals(Constants.chop_gow) || this.tile1.getName().equals(Constants.chop_gow)) {
 
-        if (tile0.getName().equals(Constants.teen) || tile1.getName().equals(Constants.teen)) {
-            if (tile0.getName().equals(Constants.chop_gow) || tile0.getName().equals(Constants.chop_gow)) {
 
-
-                isGong = true;
+                isWong = true;
                 handName = Constants.teen_gow_wong;
                 handRank = 17;
-                System.out.println("setaaa teen gow ran");
+
+                Log.e("set", "line 106" + String.valueOf(this.getHandRank()));
 
             }
         }
@@ -117,7 +119,7 @@ public class Hand {
 
             }
         }
-
+        Log.e("set", String.valueOf(this.getHandRank()));
 
         if (tile0.getName().equals(Constants.teen) || tile1.getName().equals(Constants.teen)) {
             if (tile0.getName().equals(Constants.yun) || tile0.getName().equals(Constants.chop_baht) || tile1.getName().equals(Constants.yun) || tile1.getName().equals(Constants.chop_baht)) {
@@ -194,6 +196,7 @@ public class Hand {
 
             }
         }
+        Log.e("set", String.valueOf(this.getHandRank()));
 
         if (this.isPair == false && this.isGong == false && this.isWong == false && this.isHighNine == false && !jeeJoon) {
             System.out.println("setaaa points only ran");
@@ -208,7 +211,7 @@ public class Hand {
 
 
         }
-        System.out.println("setaaa" + this.isGong + this.isHighNine + this.isPair + this.isWong);
+        Log.e("set", String.valueOf(this.getHandRank()));
 
     }
 
@@ -267,6 +270,10 @@ public class Hand {
 
         // my new method
         boolean handIsSet = false;
+        boolean Pair = false;
+        boolean Wong = false;
+        boolean Gong = false;
+        boolean HighNine = false;
         int numberOfPairs = 0;
         int hand1Tile0dots;
         int hand1Tile1dots;
@@ -276,11 +283,15 @@ public class Hand {
 
      Deck deck = new Deck();
      //   ArrayList<Tile> tileSet = dealerTiles;
+
+        // 0 36,1 36, 2 12, 3 12, 4 2, 5 2, 6 8, 7 8, 8 4, 9 4, 10 10
+        // 11 10, 12 6 , 13 6, 14 4, 15 4, 16 11, 17 11, 18 10, 19 10, 20 7 , 21 7
+        // 22 6, 23 6, 24 9, 25 9, 26 8, 27 8, 28 7, 29 7, 30 5, 31 5
         ArrayList<Tile> tileSet =  new ArrayList<Tile>();
-        tileSet.add(deck.newDeck.get(8));
-        tileSet.add(deck.newDeck.get(2));
-        tileSet.add(deck.newDeck.get(7));
-        tileSet.add(deck.newDeck.get(23));
+        tileSet.add(deck.newDeck.get(7));//8
+        tileSet.add(deck.newDeck.get(2));//teen
+        tileSet.add(deck.newDeck.get(24));//9
+        tileSet.add(deck.newDeck.get(16));//11
 
 
 
@@ -536,9 +547,8 @@ public class Hand {
 
 
         //---checks high nine
-
-        if (tileNames.contains((Constants.teen)) || tileNames.contains(Constants.day) && !handIsSet) {
-            if (dots.contains(7)) {
+        if (tileNames.contains((Constants.teen)) || tileNames.contains(Constants.day) ) {
+            if (dots.contains(7)&& !handIsSet) {
                 Iterator<Tile> it = tileSet.iterator();
 
 
@@ -587,11 +597,7 @@ public class Hand {
                     hand1.tile0 = (day != hand0.tile0 && day!= null) ? day : non0;
                     hand1.tile1 = (seven1 != null) ? seven1 : non1;
 
-                    isHighNine = true;
-
-
-
-
+                    HighNine = true;
 
 
             }
@@ -602,8 +608,8 @@ public class Hand {
 
         //--- checks gong
 
-        if (tileNames.contains((Constants.teen)) || tileNames.contains(Constants.day) && !handIsSet && !isHighNine) {
-            if (dots.contains(8)) {
+        if (tileNames.contains((Constants.teen)) || tileNames.contains(Constants.day) ) {
+            if (dots.contains(8)&& !handIsSet && !HighNine) {
                 Iterator<Tile> it = tileSet.iterator();
 
                 Tile teen = null;
@@ -643,16 +649,18 @@ public class Hand {
                                 break;
                             }
                     }
+                }
 
                     hand0.tile0 = (teen != null) ? teen : day;
                     hand0.tile1 = eight0;
                     hand1.tile0 = (day != hand0.tile0 && day!= null) ? day : non0;
                     hand1.tile1 = (eight1 != null) ? eight1 : non1;
 
-                    isGong = true;
+                    Gong = true;
+                    Log.e("hunt", String.valueOf(Gong) + " #1");
 
 
-                }
+
 
 
             }
@@ -663,8 +671,9 @@ public class Hand {
 
         //----- checks wong
 
-        if (tileNames.contains((Constants.teen)) || tileNames.contains(Constants.day) && !handIsSet && !isHighNine && !isGong) {
-            if (dots.contains(9)) {
+        if (tileNames.contains((Constants.teen)) || tileNames.contains(Constants.day) ) {
+            Log.e("hunt", String.valueOf(Gong));
+            if (dots.contains(9)&& !handIsSet && !HighNine && !Gong) {
                 Iterator<Tile> it = tileSet.iterator();
 
                 Tile teen = null;
@@ -704,23 +713,26 @@ public class Hand {
                                 break;
                             }
                     }
-
+                }
                     hand0.tile0 = (teen != null) ? teen : day;
                     hand0.tile1 = nine0;
                     hand1.tile0 = (day != hand0.tile0 && day!= null) ? day : non0;
                     hand1.tile1 = (nine1 != null) ? nine1 : non1;
 
-                    isWong = true;
+                    Wong = true;
 
-                }
+
 
 
             }
         }
 
+        testValue = String.valueOf(hand0.tile0.getNumberOfSpots()) + " " + String.valueOf(hand0.tile1.getNumberOfSpots()) + " " + String.valueOf(hand1.tile0.getNumberOfSpots())+ " " + String.valueOf(hand1.tile1.getNumberOfSpots());
+        Log.e("hunt","after wong ran " + testValue);
+
 
         // sets wong over gong  (exception a foxwoods)
-        if (isGong && dots.contains(11) && dots.contains(9)) {
+        if (Gong && dots.contains(11) && dots.contains(9)) {
             Tile teenOrDay = null;
             Tile nine = null;
             Tile eight = null;
@@ -761,14 +773,16 @@ public class Hand {
             hand1.tile0 = eight;
             hand1.tile1 = eleven;
 
-            isGong = false;
-            isWong = true;
+            Gong = false;
+            Wong = true;
             handIsSet = true;
         }
+        testValue = String.valueOf(hand0.tile0.getNumberOfSpots()) + " " + String.valueOf(hand0.tile1.getNumberOfSpots()) + " " + String.valueOf(hand1.tile0.getNumberOfSpots())+ " " + String.valueOf(hand1.tile1.getNumberOfSpots());
+        Log.e("hunt","sets wong over gong " + testValue);
 
 
         // sets wong over high nine (exception b foxwoods)
-        if (isHighNine && dots.contains(11) && dots.contains(9)) {
+        if (HighNine && dots.contains(11) && dots.contains(9)) {
             Tile teenOrDay = null;
             Tile nine = null;
             Tile seven = null;
@@ -809,8 +823,8 @@ public class Hand {
             hand1.tile0 = seven;
             hand1.tile1 = eleven;
 
-            isHighNine = false;
-            isWong = true;
+            HighNine = false;
+            Wong = true;
             handIsSet = true;
         }
 
@@ -818,7 +832,7 @@ public class Hand {
         //----- sets gong over high nine (foxwoods exception c 1st part)
 
         // sets wong over high nine (exception b foxwoods)
-        if (isHighNine && dots.contains(4) && dots.contains(8)) {
+        if (HighNine && dots.contains(4) && dots.contains(8)) {
             Tile teenOrDay = null;
             Tile eight = null;
             Tile seven = null;
@@ -859,15 +873,15 @@ public class Hand {
             hand1.tile0 = seven;
             hand1.tile1 = four;
 
-            isHighNine = false;
-            isGong = true;
+            HighNine = false;
+            Gong = true;
             handIsSet = true;
         }
 
 
         //----- sets gong over high nine (foxwoods exception c 2nd part)
 
-        if (isHighNine && dots.contains(5) && dots.contains(8) && !tileNames.contains(Constants.yun)) {
+        if (HighNine && dots.contains(5) && dots.contains(8) && !tileNames.contains(Constants.yun)) {
             Tile teenOrDay = null;
             Tile eight = null;
             Tile seven = null;
@@ -908,13 +922,13 @@ public class Hand {
             hand1.tile0 = seven;
             hand1.tile1 = five;
 
-            isHighNine = false;
-            isGong = true;
+            HighNine = false;
+            Gong = true;
             handIsSet = true;
         }
 
 
-        if (!handIsSet && !isPair && !isHighNine && !isWong && !isGong) {
+        if (!handIsSet && !Pair && !HighNine && !Wong && !Gong) {
             bestSequence = SequenceFinder.bestSequenceFinder(tileSet);
             System.out.println("bestSequence" + bestSequence);
             return bestSequence;
