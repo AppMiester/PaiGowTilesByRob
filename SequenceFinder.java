@@ -207,7 +207,7 @@ public class SequenceFinder {
 
 
             }
-        
+
 
         return bestSequence.getSequenceID();
     }
