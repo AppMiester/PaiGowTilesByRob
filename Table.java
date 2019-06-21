@@ -297,6 +297,7 @@ public class Table extends AppCompatActivity {
             movePlayerViews(playerHand_0, playerHand_1);
            String best = new Hand().setDealerTileValues(dealerTiles,dealerHand_0,dealerHand_1);
            System.out.println("best = " + best);
+           Log.e("bug", "setvalue ran = " + String.valueOf(Hand.setvalueran));
 
 
         TextView test = (TextView) findViewById(R.id.testView);
