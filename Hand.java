@@ -283,16 +283,21 @@ public class Hand {
         String bestSequence;
 
         Deck deck = new Deck();
-        //   ArrayList<Tile> tileSet = dealerTiles;
 
+             //import dealer tiles
+          ArrayList<Tile> tileSet = dealerTiles;
+
+         // arrayList indexes of point values of tiles in a new deck
         // 0 36,1 36, 2 12, 3 12, 4 2, 5 2, 6 8, 7 8, 8 4, 9 4, 10 10
         // 11 10, 12 6 , 13 6, 14 4, 15 4, 16 11, 17 11, 18 10, 19 10, 20 7 , 21 7
         // 22 6, 23 6, 24 9, 25 9, 26 8, 27 8, 28 7, 29 7, 30 5, 31 5
-        ArrayList<Tile> tileSet = new ArrayList<Tile>();
+
+        // un comment this to set tiles specifically for tests (comment out line below "import dealer tiles)
+        /*ArrayList<Tile> tileSet = new ArrayList<Tile>();
         tileSet.add(deck.newDeck.get(22));//look
         tileSet.add(deck.newDeck.get(0));//geejoon
         tileSet.add(deck.newDeck.get(12));//chong
-        tileSet.add(deck.newDeck.get(16));//foo
+        tileSet.add(deck.newDeck.get(16));//foo*/
 
 
         ArrayList<String> tileNames = new ArrayList<String>();
