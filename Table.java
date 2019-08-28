@@ -350,7 +350,7 @@ public class Table extends AppCompatActivity {
         return params.topMargin;
     }
 
-
+//
     //------move tiles
     public void movePlayerViews(Hand playerHand_0, Hand playerHand_1) {
         Hand highHand = (playerHand_0.isHighHand()) ? playerHand_0 : playerHand_1;
